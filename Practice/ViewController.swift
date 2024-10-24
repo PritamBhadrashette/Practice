@@ -6,9 +6,16 @@
 //
 
 import UIKit
-
+import Kingfisher
 class ViewController: UIViewController {
 
+    
+    @IBOutlet weak var productTableView: UITableView!
+    var url : URL?
+    var urlRequest : URLRequest?
+    var urlSession : URLSession?
+    var product : [Product] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         jsonParse()
@@ -21,7 +28,6 @@ class ViewController: UIViewController {
             return
         }
         urlRequest = URLRequest(url: url)
-        
         urlRequest?.httpMethod = "GET"
         
         urlSession = URLSession(configuration: .default)
@@ -60,7 +66,7 @@ extension ViewController : UITableViewDataSource,UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.productTableView.dequeueReusableCell(withIdentifier: "ProductTableViewCell") as! ProductTableViewCell
         cell.productNameLabel.text = product[indexPath.row].title
-        cell.productPriceLabel.text = String(product[indexPath.row].price)
+        cell.productPriceLabel.text = "\(product[indexPath.row].price) $"
         cell.productDescriptionLabe.text = product[indexPath.row].description
         if let url = URL(string: product[indexPath.row].imageURL) {
                     cell.productImageView?.kf.setImage(with: url)
